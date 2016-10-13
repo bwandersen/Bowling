@@ -7,10 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7E257481-31B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5899F8F9-DE69-4977-A63F-5C77BA888ABE}"
 	ProjectSection(SolutionItems) = preProject
+		circle.yml = circle.yml
 		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BowlingGame", "src\BowlingGame\BowlingGame.xproj", "{8BE7D7E0-9730-4002-B8C7-B1C8B9109FED}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTest", "src\test\UnitTest.xproj", "{2A2897C5-A0CE-408A-AE87-17173459F890}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0FCB8433-9D23-4CC8-8A4F-18A2C2FE6AAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,11 +27,16 @@ Global
 		{8BE7D7E0-9730-4002-B8C7-B1C8B9109FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BE7D7E0-9730-4002-B8C7-B1C8B9109FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BE7D7E0-9730-4002-B8C7-B1C8B9109FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A2897C5-A0CE-408A-AE87-17173459F890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A2897C5-A0CE-408A-AE87-17173459F890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A2897C5-A0CE-408A-AE87-17173459F890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A2897C5-A0CE-408A-AE87-17173459F890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8BE7D7E0-9730-4002-B8C7-B1C8B9109FED} = {7E257481-31BE-4824-ABA7-97E9179103CD}
+		{2A2897C5-A0CE-408A-AE87-17173459F890} = {0FCB8433-9D23-4CC8-8A4F-18A2C2FE6AAF}
 	EndGlobalSection
 EndGlobal
