@@ -4,6 +4,7 @@ using BowlingGame;
 
 namespace test
 {
+  [Trait("Category", "Unit")]
   public class GameTest
   {
     private void AssertExpectedScore(IRollRepository rolls, IScoreChecker checker)
