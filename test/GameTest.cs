@@ -9,7 +9,7 @@ namespace test
   {
     private void AssertExpectedScore(IRollRepository rolls, IScoreChecker checker)
     {
-      var target = new Game(rolls, checker);
+      var target = new Game(rolls);
       Assert.True(checker.Verify(rolls.RollId, target.Score()));
     }
 

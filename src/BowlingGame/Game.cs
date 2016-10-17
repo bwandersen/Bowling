@@ -8,88 +8,68 @@ namespace BowlingGame
     private const int NofFrames = 10;
     private const int RollsPerFrame = 2;   // 10th frame of 3 rolls not relevant to the algorithm
 
-    private IRollRepository _repository;
-    private IScoreChecker _checker;
+    private IRollRepository _repository;    
     private IList<int> Scores { get; set; } = new List<int>();
 
-    public Game(IRollRepository repository, IScoreChecker checker)
+    public IList<int> Rolls { get; set; }
+
+    public Game(IRollRepository repository)
     {
-      _repository = repository;
-      _checker = checker;
+      _repository = repository;      
     }
 
     public IList<int> Score()
-    {      
+    {
+      Rolls = _repository.GetRolls();
       for (int i = 0; i < NofRolls(); i += RollsPerFrame)
       {
-        var canCalculate = true;
+        var nextFrameStart = i + RollsPerFrame;
         var frameScore = GetFrameScore(i);
-
+        
         if (IsStrike(Roll(i)) && (!IsLastFrame(i)))
         {
-          canCalculate = (NofRolls() > i + 2);
-          frameScore += TwoRolls(i + 2);
+          if (!CanCalculate(nextFrameStart)) break;
+          frameScore += TwoRolls(nextFrameStart);
 
-          if (IsStrike(Roll(i + 2)) && (!IsLastFrame(i + 2)))
+          if (IsStrike(Roll(nextFrameStart)) && (!IsLastFrame(nextFrameStart)))
           {
-            canCalculate = (NofRolls() > i + 4);
-            frameScore += Roll(i + 4);
+            var twoFramesAheadStart = nextFrameStart + RollsPerFrame;
 
-            if (!IsLastFrame(i + 4))
-              frameScore += Roll(i + 5);
+            if (!CanCalculate(twoFramesAheadStart)) break;
+            frameScore += Roll(twoFramesAheadStart);
+
+            if (!IsLastFrame(twoFramesAheadStart))
+              frameScore += Roll(twoFramesAheadStart + 1);
           }
         }
         else if (IsSpare(frameScore))
         {
-          canCalculate = (NofRolls() > i + 2);
-          frameScore += Roll(i + 2);
+          if (!CanCalculate(nextFrameStart)) break;
+          frameScore += Roll(nextFrameStart);
         }
-
-        if (canCalculate)
-          Scores.Add(PreviousFrame() + frameScore);
+        
+        Scores.Add(PreviousFrame() + frameScore);
       }
 
       return Scores;
     }
 
-    private int NofRolls()
-    {
-      return Math.Min(_repository.Rolls.Count, NofFrames * RollsPerFrame);
-    }
+    private bool CanCalculate(int rollIndex) => (NofRolls() > rollIndex);
 
-    private int PreviousFrame()
-    {
-      return (Scores.Count == 0) ? 0 : Scores[Scores.Count - 1];
-    }
+    private int NofRolls() => Math.Min(Rolls.Count, NofFrames * RollsPerFrame);
 
-    private int GetFrameScore(int i)
-    {
-      return TwoRolls(i) + ((IsLastFrame(i)) ? Roll(i + 2) : 0);
-    }
+    private int PreviousFrame() => (Scores.Count == 0) ? 0 : Scores[Scores.Count - 1];
 
-    private int TwoRolls(int i)
-    {
-      return Roll(i) + Roll(i + 1);
-    }
+    private int GetFrameScore(int i) => TwoRolls(i) + ((IsLastFrame(i)) ? Roll(i + 2) : 0);
 
-    private int Roll(int i)
-    {
-      return ((i < _repository.Rolls.Count) ? _repository.Rolls[i] : 0);
-    }
+    private int TwoRolls(int i) => Roll(i) + Roll(i + 1);
 
-    private bool IsLastFrame(int i)
-    {
-      return (i >= 18);
-    }
+    private int Roll(int i) => ((i < Rolls.Count) ? Rolls[i] : 0);
 
-    private bool IsSpare(int frame)
-    {
-      return (frame == 10);
-    }
+    private bool IsLastFrame(int i) => (i >= 18);
 
-    private bool IsStrike(int roll)
-    {
-      return (roll == 10);
-    }
+    private bool IsSpare(int frame) => (frame == 10);
+
+    private bool IsStrike(int roll) => (roll == 10);
   }
 }

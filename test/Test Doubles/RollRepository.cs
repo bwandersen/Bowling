@@ -7,7 +7,7 @@ namespace test
   {
     public string RollId { get; set; }
 
-    public List<int> Rolls { get; } = new List<int>();
+    private List<int> Rolls { get; } = new List<int>();
 
     public RollRepository(int[] rolls)
     {
@@ -17,6 +17,11 @@ namespace test
     public RollRepository(int value, int count)
     {
       for (int i = 0; i < count; i++) Rolls.Add(value);
+    }
+
+    public IList<int> GetRolls()
+    {
+      return Rolls;
     }
   }
 }

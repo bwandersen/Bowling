@@ -9,7 +9,7 @@ namespace test
     [Fact]
     public void canCallRemoteRollRepository()
     {
-      var target = new RemoteRollRepository();
+      var target = new RemoteRollRepository("http://37.139.2.74");
       target.GetRolls();
       Assert.False(string.IsNullOrWhiteSpace(target.RollId));
     }

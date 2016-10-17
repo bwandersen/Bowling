@@ -6,6 +6,6 @@ namespace BowlingGame
   {
     string RollId { get; set; }
 
-    List<int> Rolls { get; } 
+    IList<int> GetRolls();
   }
 }

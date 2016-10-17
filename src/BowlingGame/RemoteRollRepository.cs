@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using RestSharp;
-using System.Threading;
 
 namespace BowlingGame
 {
@@ -9,38 +8,37 @@ namespace BowlingGame
     public string token { get; set; }
     public List<List<int>> points {get; set;}
   }
-   
+
   public class RemoteRollRepository : IRollRepository
   {
-    private EventWaitHandle Wait;
-
+    private string _url;
     public string RollId {get; set;}
 
-    public List<int> Rolls { get; private set; }
-
-    public void GetRolls()
+    public RemoteRollRepository(string url)
     {
-      var restClient = new RestClient("http://37.139.2.74");
+      _url = url;
+    }
+
+    public IList<int> GetRolls()
+    {
+      var restClient = new RestClient(_url);
       var request = new RestRequest(Method.GET);
       request.Resource = "api/points";
 
-      Wait = new AutoResetEvent(false);
-      var handle = restClient.ExecuteAsync<RemoteRollRepresentation>(request, SetRolls);
-      Wait.WaitOne();      
-    }
-
-    private void SetRolls(IRestResponse<RemoteRollRepresentation> response)
-    {
-      Rolls = new List<int>();
-      
-      RollId = response?.Data?.token;
-      if (response?.Data?.points != null)
+      var response = restClient.Execute<RemoteRollRepresentation>(request);
+      if (response.ResponseStatus == ResponseStatus.Completed)
       {
-        foreach (var frame in response.Data.points)
-          Rolls.AddRange(frame);
+        var rolls = new List<int>();
+        RollId = response?.Data?.token;
+        if (response?.Data?.points != null)
+        {
+          foreach (var frame in response.Data.points)
+            rolls.AddRange(frame);
+        }
+        return rolls;
       }
 
-      Wait.Set();
+      return null;      
     }
   }
 }
